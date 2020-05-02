@@ -6,12 +6,17 @@ from django.http import JsonResponse
 from django.views.generic.base import View
 
 from demo.models import SomeItem
+from demo.pgbouncer_helper import pgbouncer_stats
 
 logger = logging.getLogger(__name__)
 
 
 def create_and_count_items(seconds_delay):
     with transaction.atomic():
+        # (See https://docs.djangoproject.com/en/3.0/topics/db/transactions/#performing-actions-after-commit )
+        # Uncomment to write pgbouncer-stats to the log after this transaction:
+        # transaction.on_commit(partial(logger.info, pgbouncer_stats()))
+
         # create 19 items
         for i in range(0, 19):
             SomeItem.objects.create()
@@ -38,7 +43,7 @@ class BlockingTransationView(View):
     The delay (in seconds) can be specified with the GET-parameter 'sleep' (limited
     to values between 0 and 120 seconds). Default is 1 second delay.
 
-    :returns a JsonResponse with some delay in seconds and the total item count
+    :returns: a JsonResponse with some delay in seconds and the total item count
     """
 
     def get(self, request, *args, **kwargs):
@@ -48,6 +53,7 @@ class BlockingTransationView(View):
             data = {
                 'seconds_delay': seconds_delay,
                 'total_item_count': total_item_count,
+                'pgbouncer_stats': pgbouncer_stats()
             }
             return JsonResponse(data=data)
         except Exception as e:
