@@ -1,1 +1,1 @@
-web: gunicorn pgbouncer_client_demo.wsgi
+web: bin/start-pgbouncer gunicorn pgbouncer_client_demo.wsgi

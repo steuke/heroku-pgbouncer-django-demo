@@ -10,6 +10,8 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 DATABASES = dict()
 DATABASES['default'] = dj_database_url.config(env="DATABASE_URL")
 
+DISABLE_SERVER_SIDE_CURSORS = True  # required when using pgbouncer's pool_mode=transaction
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 

@@ -14,6 +14,12 @@ $ heroku apps:create ${HEROKU_APP_NAME}
 # add postgres
 $ heroku addons:create heroku-postgresql:hobby-dev --name=${HEROKU_APP_NAME}
 
+# add pgbouncer buildpack
+$ heroku buildpacks:add heroku/pgbouncer
+
+# add python buildpack
+$ heroku buildpacks:add heroku/python3
+
 # deploy the app
 $ git push heroku master
 
