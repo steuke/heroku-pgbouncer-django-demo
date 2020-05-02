@@ -1,0 +1,1 @@
+# collectstatic requires this folder
